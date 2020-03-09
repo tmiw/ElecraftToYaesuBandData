@@ -12,7 +12,7 @@
 
 /* Change for your country. Defaults to US band plan. */
 #define BAND_MIN_KHZ_160M 1800
-#define BAND_MAX_KHZ_160M 1800
+#define BAND_MAX_KHZ_160M 2000
 
 #define BAND_MIN_KHZ_80M 3500
 #define BAND_MAX_KHZ_80M 4000
