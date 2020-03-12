@@ -10,7 +10,7 @@ hardware that can understand FT-817/818 band data voltages.
 For the MKR Zero, use the following pins:
 
 * Radio: pins 0 and 1 (TTL; ensure you have something like [this](https://www.sparkfun.com/products/11189) between those pins and your radio to prevent damage).
-* Band data output: pin 14 (A0)
+* Band data output: A0/DAC0
 
 Set RADIO_BAUD and COMPUTER_BAUD in the sketch to preferred values (ensuring that the radio is also set to RADIO_BAUD), then 
 simply plug the board into a power source (and/or your computer). The sketch will configure the radio to automatically receive
