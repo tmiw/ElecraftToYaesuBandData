@@ -18,4 +18,6 @@ band data changes and operate on that data accordingly.
 
 # Known Issues
 
-TBD. Please feel free to create PRs and/or let me know of issues you find.
+The KX3 seems to behave as though it's in auto-info mode 2, causing significant delays before the band data voltage changes. Need to investigate using polling instead of auto-info.
+
+Please feel free to create PRs and/or let me know of additional issues you find.
