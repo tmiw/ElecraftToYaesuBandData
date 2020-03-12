@@ -56,9 +56,9 @@
 #define AUTOINFO_CMD "AI1;" /* Tells KX3 etc. to automatically output frequency changes */
 #define SERIAL_TIMEOUT_MS 1
 
-#define ANALOG_PIN 14 /* MKR Zero pure analog pin */
+#define ANALOG_PIN A0 /* MKR Zero pure analog pin */
 #define VOLTAGE_STANDARD 330 /* 3.3V; 5V would be 500 */
-#define MAX_INT_FOR_VOLTAGE_STANDARD 255
+#define MAX_INT_FOR_VOLTAGE_STANDARD 4095
 
 #define VOLTAGE_160M  33
 #define VOLTAGE_80M   66
@@ -132,6 +132,7 @@ int frequencyToVoltage(int frequencyKhz)
 
 void setBand(int frequencyKhz)
 {
+  analogWriteResolution(12);
   analogWrite(ANALOG_PIN, voltageToInteger(frequencyToVoltage(frequencyKhz)));
 }
 
@@ -151,7 +152,7 @@ void parseRadioOutput(String radioBuffer)
 
 void setup() {
   // Set analog output pin to 0V.
-  pinMode(ANALOG_PIN, OUTPUT);
+  analogWriteResolution(12);
   analogWrite(ANALOG_PIN, 0);
 
   // Open serial ports
@@ -164,25 +165,41 @@ void setup() {
   Serial1.print(AUTOINFO_CMD);
 }
 
-void loop() {
-  // Read data from both the radio and the computer
-  String computerBuffer;
-  String radioBuffer;
+static String computerBuffer;
+static String radioBuffer;
   
-  if (SerialUSB.available() > 0)
+void loop() {
+  // Read data from both the radio and the computer  
+  while (SerialUSB.available() > 0)
   {
-    computerBuffer = SerialUSB.readStringUntil(COMMAND_TERMINATOR);
-    Serial1.print(computerBuffer);
-    Serial1.write(COMMAND_TERMINATOR);
+    int character = SerialUSB.read();
+    if (character == COMMAND_TERMINATOR)
+    {
+      Serial1.print(computerBuffer);
+      Serial1.write(COMMAND_TERMINATOR);
+      computerBuffer = "";
+    }
+    else
+    {
+      computerBuffer += (char)character;
+    }
   }
 
-  if (Serial1.available() > 0)
+  while (Serial1.available() > 0)
   {
-    radioBuffer = Serial1.readStringUntil(COMMAND_TERMINATOR);
-    SerialUSB.print(radioBuffer);
-    SerialUSB.write(COMMAND_TERMINATOR);
+    int character = Serial1.read();
+    if (character == COMMAND_TERMINATOR)
+    {
+      SerialUSB.print(radioBuffer);
+      SerialUSB.write(COMMAND_TERMINATOR);
 
-    // Parse data from the radio to determine if we got a frequency change
-    parseRadioOutput(radioBuffer);
+      // Parse data from the radio to determine if we got a frequency change
+      parseRadioOutput(radioBuffer);
+      radioBuffer = "";
+    }
+    else
+    {
+      radioBuffer += (char)character;
+    }    
   }
 }
