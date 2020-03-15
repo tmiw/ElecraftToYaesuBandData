@@ -5,6 +5,10 @@ over the radio's RS-232 port. Originally developed for interfacing the Chinese-m
 but can be adapted for any Arduino (with necessary configuration and/or serial port/hardware modifications) and any 
 hardware that can understand FT-817/818 band data voltages.
 
+# Prerequisites
+
+[Arduino FreeRTOS for SAMD21](https://github.com/BriscoeTech/Arduino-FreeRTOS-SAMD21)
+
 # Usage
 
 For the MKR Zero, use the following pins:
@@ -18,6 +22,4 @@ band data changes and operate on that data accordingly.
 
 # Known Issues
 
-The KX3 seems to behave as though it's in auto-info mode 2, causing significant delays before the band data voltage changes. Need to investigate using polling instead of auto-info.
-
-Please feel free to create PRs and/or let me know of additional issues you find.
+None. Please feel free to create PRs and/or let me know of additional issues you find.
