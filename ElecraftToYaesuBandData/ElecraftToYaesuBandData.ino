@@ -234,7 +234,13 @@ void radioSerial(void *pvParameters)
       Serial1.print(commandToSend.command);
       Serial1.print(COMMAND_TERMINATOR);
       receiveOutput = commandToSend.receiveOutput;
-      vTaskDelay( (100 * 1000) / portTICK_PERIOD_US );
+
+      // Pause between 10-100ms depending on when radio sends a response.
+      for (int i = 0; i < 10; i++)
+      {
+        vTaskDelay( (10 * 1000) / portTICK_PERIOD_US );
+        if (Serial1.available() > 0) break;
+      }
     }
 
     if (Serial1.available() > 0)
